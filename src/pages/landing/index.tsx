@@ -1,5 +1,10 @@
-function App() {
+import { useEffect } from 'react'
+import { print } from './script'
 
+function App() {
+  useEffect(()=> {
+    print()
+  })
   return (
     <>
     <div className='font-medium'>
