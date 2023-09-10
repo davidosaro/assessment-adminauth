@@ -1,15 +1,12 @@
 import { Routes, Route } from 'react-router-dom';
-import Home from './pages/landing/index.tsx'
-// import About from './Pages/About';
-// import Products from './Pages/Products';
+import Signin from './pages/auth/signin/index.tsx';
 
 const App = () => {
  return (
     <>
        <Routes>
-          <Route path="/" element={<Home />} />
-          {/* <Route path="/products" element={<Products />} />
-          <Route path="/about" element={<About />} /> */}
+          <Route path="/" element={<Signin />} />
+          <Route path="/signin" element={<Signin />} />
        </Routes>
     </>
  );
