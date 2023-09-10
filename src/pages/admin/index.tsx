@@ -8,18 +8,17 @@ function Admin() {
       <div>
         <header className="font-primary flex justify-between mb-[20px]">
           <h1 className="text-[28px] font-semibold text-gray-800">Summary</h1>
-          <div className="flex gap-x-[10px]">
+          {/* <div className="flex gap-x-[10px]">
             <Button 
-              text="Export Data" 
-              type='outline'
-              className="w-[150px] bg-sky-50 border-0 text-sky-500"
+              text="Export Data"
+              className="!w-[150px] bg-sky-200 border-0 !text-sky-500"
             />
             <Button 
               icon="ellipsis" 
               type='outline'
-              className="w-[50px]"
+              className="!w-[50px]"
             />
-          </div>
+          </div> */}
         </header>
         {/*  */}
 
