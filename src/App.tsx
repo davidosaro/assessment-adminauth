@@ -3,6 +3,7 @@ import Signin from './pages/auth/signin/index.tsx';
 import Layout from './components/layout/index.tsx';
 import Admin from './pages/admin/index.tsx';
 import Employees from './pages/admin/employee/index.tsx';
+import Tasks from './pages/admin/task/index.tsx';
 
 const App = () => {
  return (
@@ -13,7 +14,7 @@ const App = () => {
           <Route path="/admin" element={<Layout><Admin /></Layout>} />
           <Route path="/admin/dashboard" element={<Layout><Admin /></Layout>} />
           <Route path="/admin/employees" element={<Layout><Employees /></Layout>} />
-          <Route path="/admin/tasks" element={<Layout><Employees /></Layout>} />
+          <Route path="/admin/tasks" element={<Layout><Tasks /></Layout>} />
        </Routes>
     </>
  );

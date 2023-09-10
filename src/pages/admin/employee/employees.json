@@ -1,0 +1,42 @@
+[
+  {
+    "fullName": "David Osaro",
+    "email": "osarodavid588@gmail.com",
+    "role": "Frontend",
+    "tag": "ENG",
+    "status": "Active",
+    "img": "https://randomuser.me/api/portraits/men/1.jpg"
+  },
+  {
+    "fullName": "Eshal Rosas",
+    "email": "EshalRosas@gmail.com",
+    "role": "HR",
+    "tag": "MGT",
+    "status": "On Leave",
+    "img": "https://randomuser.me/api/portraits/women/2.jpg"
+  },
+  {
+    "fullName": "Anita Rodriquez",
+    "email": "AnitaRodriquez@gmail.com",
+    "role": "Intern",
+    "tag": "MEM",
+    "status": "Active",
+    "img": "https://randomuser.me/api/portraits/women/6.jpg"
+  },
+  {
+    "fullName": "TaylanBush",
+    "email": "TaylanBush@gmail.com",
+    "role": "Project Manager",
+    "tag": "MGT",
+    "status": "Blocked",
+    "img": "https://randomuser.me/api/portraits/men/3.jpg"
+  },
+  {
+    "fullName": "Tarik Novak",
+    "email": "TarikNovak@gmail.com",
+    "role": "Social Media Manager",
+    "tag": "ADM",
+    "status": "Pending",
+    "img": "https://randomuser.me/api/portraits/men/4.jpg"
+  }
+]

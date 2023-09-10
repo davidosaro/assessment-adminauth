@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Project Setup",
+    "description": "Creating the project repo and folder structure",
+    "tags": [
+      "Product", "Design"
+    ],
+    "endDate": "Aug 25",
+    "assignees": [
+      {
+        "fullName": "Eshal Rosas",
+        "email": "EshalRosas@gmail.com",
+        "role": "HR",
+        "tag": "MGT",
+        "status": "On Leave",
+        "img": "https://randomuser.me/api/portraits/women/2.jpg"
+      }
+    ]
+  }
+]

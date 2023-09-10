@@ -1,4 +1,4 @@
-import { faEllipsis, faRotate } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faEllipsis, faPlus, faRotate } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 interface ButtonProps {
@@ -27,6 +27,7 @@ export default function Button({text, type = 'full', icon = '', loading = false,
         </svg>
       )
       case "ellipsis": return <FontAwesomeIcon icon={faEllipsis} size="2xl"/>
+      case "plus": return <FontAwesomeIcon icon={faPlus} size="lg"/>
       default: return ""
     }
   }
