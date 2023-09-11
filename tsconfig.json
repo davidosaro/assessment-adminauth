@@ -20,6 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["next-env.d.ts", "**/*.tsx", ".next/types/**/*.ts", ".src/pages/**/index.tsx"],
+  "include": ["next-env.d.ts", "**/*.tsx", ".next/types/**/*.ts", ".src/pages/**/index.tsx", "src/components/utils/Notify.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

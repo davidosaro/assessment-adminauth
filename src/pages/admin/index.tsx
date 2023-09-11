@@ -1,6 +1,6 @@
 import { faArrowTrendDown, faArrowTrendUp, faChartSimple, faCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Button from "../../components/inputs/button";
+// import Button from "../../components/inputs/button";
 
 function Admin() {
   return (

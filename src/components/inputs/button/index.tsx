@@ -8,9 +8,10 @@ interface ButtonProps {
   loading?: boolean,
   onClick?(): void;
   className?: string,
+  disabled?: boolean
 }
 
-export default function Button({text, type = 'full', icon = '', loading = false, onClick, className}: ButtonProps) {
+export default function Button({text, type = 'full', icon = '', loading = false, onClick, className, disabled}: ButtonProps) {
   const typeCss = {
     full: 'bg-blue-500 text-white',
     outline: 'bg-transparent text-black border-[1px]'
@@ -33,7 +34,7 @@ export default function Button({text, type = 'full', icon = '', loading = false,
   }
 
   return (
-    <button type="button" className={`${buttonCss} ${className}`} onClick={onClick}>
+    <button type="button" className={`${buttonCss} ${className}`} onClick={onClick} disabled={disabled}>
       <span>
         {iconCss()}
       </span>
