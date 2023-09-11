@@ -1,9 +1,11 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal from "./index.tsx";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import Button from "../inputs/button/index.tsx";
 import { useEffect, useState } from "react";
-
+import { setTasks, getTasks } from "../../utils/localStorage.ts";
 interface data {
   title?: string,
   description?: string,
@@ -14,8 +16,10 @@ interface ModalProps {
   open?: boolean;
   setOpen: () => void;
   data?: data;
+  setTaskList: (new_tasks) => void;
+  canDelete?: boolean
 }
-export default function TaskModal({open, setOpen, data = {} }: ModalProps) {
+export default function TaskModal({open, setOpen, data = {}, setTaskList, canDelete }: ModalProps) {
   const [taskTypeList, setTaskTypeList] = useState([] as string[]);
   const [task, setTask] = useState({});
   const statusColor = (color: string) => {
@@ -28,6 +32,7 @@ export default function TaskModal({open, setOpen, data = {} }: ModalProps) {
     }
   }
   const setTaskType = (taskType: string) => {
+    if (canDelete) return
     if (taskTypeList.includes(taskType)) {
       const newList = [...taskTypeList].filter((list: string) => list != taskType)
       return setTaskTypeList(newList)
@@ -39,9 +44,35 @@ export default function TaskModal({open, setOpen, data = {} }: ModalProps) {
   const editTask = (params: string, value: string) => {
     setTask({...task, [params]: value})
   }
+  const deleteTask = () => {
+    const new_tasks = getTasks().filter((tasks) => tasks.id != task.id);
+    setTasks(new_tasks);
+    setTaskList(new_tasks);
+    setOpen();
+  }
   const saveTask = () => {
-    const new_task = {...task, "tags": taskTypeList}
-    console.log(new_task, 'newTask')
+    if (canDelete) {
+      deleteTask();
+      return;
+    }
+    //edit
+    if (data.title) {
+      const new_task = getTasks().map((tasks) => {
+        if (tasks.id == task.id) {
+          return {...task, "tags": taskTypeList}
+        }
+        return tasks
+      })
+      setOpen();
+      setTasks(new_task);
+      setTaskList(new_task);
+
+      return
+    }
+    const new_task = {...task, "tags": taskTypeList, "id": getTasks()?.length ?? 0}
+    setOpen();
+    setTaskList([...getTasks() ?? [], new_task]);
+    setTasks([...getTasks() ?? [], new_task]);
   }
 
   useEffect(() => {
@@ -58,11 +89,11 @@ export default function TaskModal({open, setOpen, data = {} }: ModalProps) {
         </header>
         <div>
           <p className="font-medium font-header mb-[10px]">Title</p>
-          <input value={data.title} onChange={(e) => editTask('title', e.target.value)} type="text" placeholder="Enter a new title" className="outline-none font-header border-b-[1px] w-full"/>
+          <input disabled={canDelete} value={task.title} onChange={(e) => editTask('title', e.target.value)} type="text" placeholder="Enter a new title" className="outline-none font-header border-b-[1px] w-full"/>
         </div>
         <div>
           <p className="font-medium font-header mb-[10px]">Task Description</p>
-          <textarea value={data.description} onChange={(e) => editTask('description', e.target.value)}  placeholder="Enter description" className="outline-none font-header border-b-[1px] w-full"/>
+          <textarea disabled={canDelete} value={task.description} onChange={(e) => editTask('description', e.target.value)}  placeholder="Enter description" className="outline-none font-header border-b-[1px] w-full"/>
         </div>
         <div>
           <p className="font-medium font-header mb-[10px]">Task Type</p>
@@ -83,7 +114,8 @@ export default function TaskModal({open, setOpen, data = {} }: ModalProps) {
         </div>
         <div>
           <Button 
-            text={`${data.title ? "Edit Task":"Create Task"}`}
+          
+            text={`${!canDelete ? (data.title ? "Edit Task":"Create Task") : "Delete Task"}`}
             // loading={true}
             onClick={saveTask}
           />

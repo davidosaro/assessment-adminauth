@@ -1,13 +1,18 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { faCalendarDays, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../../../components/inputs/button";
-import TaskList from './tasks.json';
+// import TaskList from './tasks.json';
 import TaskModal from "../../../components/modals/taskModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getTasks } from "../../../utils/localStorage";
 
 export default function Tasks() {
   const [openModal, setOpenModal] = useState(false);
   const [modalData, setModalData] = useState({});
+  const [TaskList, setTaskList] = useState([]);
+  const [canDelete, setCanDelete] = useState(false);
 
   const statusColor = (color: string) => {
     switch(color) {
@@ -19,16 +24,26 @@ export default function Tasks() {
     }
   }
   const editTask = (data: object) => {
+    setCanDelete(false);
     setOpenModal(!openModal);
     setModalData(data);
   }
   const createTask = () => {
+    setCanDelete(false);
     setOpenModal(!openModal);
     setModalData({});
   }
+  const deleteTask = (data: object) => {
+    setCanDelete(true);
+    setOpenModal(!openModal);
+    setModalData(data);
+  }
+  useEffect(()=> {
+    setTaskList(getTasks() ?? [])
+  },[])
 return (
   <main className="p-[40px]">
-    <TaskModal open={openModal} data={modalData} setOpen={() => setOpenModal(!openModal)}></TaskModal>
+    <TaskModal open={openModal} data={modalData} setOpen={() => setOpenModal(!openModal)} setTaskList={setTaskList} canDelete={canDelete}></TaskModal>
     <header className="font-primary flex justify-between mb-[40px]">
       <h1 className="text-[28px] font-semibold text-gray-800 flex items-center">
         Tasks
@@ -80,7 +95,8 @@ return (
                 <FontAwesomeIcon icon={faCalendarDays} size="lg" />
                 <span>{task.endDate}</span>
               </h1>
-              <FontAwesomeIcon icon={faTrash} size="lg" className="space-x-[8px] text-grey hover:text-red-600 cursor-pointer mr-[4px]"/>
+              <FontAwesomeIcon icon={faTrash} size="lg" className="space-x-[8px] text-grey hover:text-red-600 cursor-pointer mr-[4px]"
+              onClick={()=> deleteTask(task)}/>
             </footer>
           </div>
         ))

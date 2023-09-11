@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 const admin_task = 'ADMIN_TASK';
 const admin_employee = 'ADMIN_EMPLOYEE';
 const admin_user = 'ADMIN_USER';

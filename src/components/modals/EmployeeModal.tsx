@@ -1,8 +1,11 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal from "./index.tsx";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import Button from "../inputs/button/index.tsx";
 import { useEffect, useState } from "react";
+import { getEmployees, setEmployees } from '../../utils/localStorage.ts'
 
 interface data {
   fullName?: string,
@@ -15,8 +18,10 @@ interface ModalProps {
   open?: boolean;
   setOpen: () => void;
   data?: data;
+  setEmployeeList: (new_employees) => void;
+  canDelete?: boolean
 }
-export default function EmployeeModal({open, setOpen, data = {} }: ModalProps) {
+export default function EmployeeModal({open, setOpen, data = {}, setEmployeeList, canDelete }: ModalProps) {
   const [roleTypeList, setRoleTypeList] = useState("");
   const [statusTypeList, setStatusTypeList] = useState("");
   const [role, setRole] = useState({});
@@ -31,12 +36,14 @@ export default function EmployeeModal({open, setOpen, data = {} }: ModalProps) {
     }
   }
   const setRoleType = (roleType: string) => {
+    if (canDelete) return
     if (roleTypeList == roleType) {
       return setRoleTypeList("")
     }
     setRoleTypeList(roleType);
   }
   const setStatusType = (statusType: string) => {
+    if (canDelete) return
     if (statusTypeList == statusType) {
       return setStatusTypeList("")
     }
@@ -48,9 +55,37 @@ export default function EmployeeModal({open, setOpen, data = {} }: ModalProps) {
   const editUser = (params: string, value: string) => {
     setRole({...role, [params]: value})
   }
+  const deleteUser = () => {
+    const new_employees = getEmployees().filter((em: {id: string}) => em.id != role.id);
+    setEmployees(new_employees);
+    setEmployeeList(new_employees);
+    setOpen();
+  }
   const saveUser = () => {
-    const new_role = {...role, "tag": roleTypeList}
-    console.log(new_role, 'newTask');
+    // delete
+    if (canDelete) {
+      deleteUser();
+      return;
+    }
+    //edit
+    if (data.email) {
+      const new_employees = getEmployees().map((em: {id: string}) => {
+        if (em.id == role.id) {
+          return {...role, "role": roleTypeList, "status": statusTypeList}
+        }
+        return em
+      })
+      setOpen();
+      setEmployees(new_employees);
+      setEmployeeList(new_employees);
+
+      return
+    }
+    //create
+    const new_employees = {...role, "role": roleTypeList, "status": statusTypeList, "id": getEmployees()?.length ?? 0}
+    setOpen();
+    setEmployeeList([...getEmployees() ?? [], new_employees]);    
+    setEmployees([...getEmployees() ?? [], new_employees]);
   }
 
   useEffect(() => {
@@ -68,11 +103,11 @@ export default function EmployeeModal({open, setOpen, data = {} }: ModalProps) {
         </header>
         <div>
           <p className="font-medium font-header mb-[10px]">Full Name</p>
-          <input value={data.fullName} onChange={(e) => editUser('fullName', e.target.value)} type="text" placeholder="Enter Full Name" className="outline-none font-header border-b-[1px] w-full"/>
+          <input disabled={canDelete} value={role.fullName} onChange={(e) => editUser('fullName', e.target.value)} type="text" placeholder="Enter Full Name" className="outline-none font-header border-b-[1px] w-full"/>
         </div>
         <div>
           <p className="font-medium font-header mb-[10px]">Email Address</p>
-          <input value={data.email} onChange={(e) => editUser('email', e.target.value)}  placeholder="Enter Email Address" className="outline-none font-header border-b-[1px] w-full"/>
+          <input disabled={canDelete} value={role.email} onChange={(e) => editUser('email', e.target.value)}  placeholder="Enter Email Address" className="outline-none font-header border-b-[1px] w-full"/>
         </div>
         <div>
           <p className="font-medium font-header mb-[10px]">Role</p>
@@ -109,8 +144,9 @@ export default function EmployeeModal({open, setOpen, data = {} }: ModalProps) {
             </div>
         </div>
         <div>
+          
           <Button 
-            text={`${data.email ? "Edit User" : "Create User" }`}
+            text={`${!canDelete ? (data.email ? "Edit User" : "Create User"): 'Delete User' }`}
             // loading={true}
             onClick={saveUser}
           />

@@ -1,4 +1,4 @@
-import { faCirclePlus, faEllipsis, faPlus, faRotate } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsis, faPlus, faRotate } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 interface ButtonProps {

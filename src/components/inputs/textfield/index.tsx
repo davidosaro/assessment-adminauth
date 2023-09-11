@@ -25,18 +25,20 @@ export default function TextField({text, icon ='', lefticon = "", className, val
     setShowPassword((prevState) => !prevState)
   }
   const validate = () => {
+    if (type == 'search') return
     try {
       setErrorMessage("")
       validateInput(type, value, `${type} cannot be blank`)
       setInputValidity(true);
       setErrorMessage("validated")
-    } catch(error: unknown) {
-      setInputValidity(false);
-      setErrorMessage(error.message)
+    } catch(error: unknown ) {
+      if (error instanceof Error) {
+        setInputValidity(false);
+        setErrorMessage(error.message)
+      }
     }
   }
 
-  const clearField = () => {}
 
   const iconCss = (icon: string) => {
     switch(icon) {

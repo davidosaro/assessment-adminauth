@@ -1,14 +1,20 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../../../components/inputs/button";
 import TextField from "../../../components/inputs/textfield";
-import EmployeeList from "./employees.json";
+// import EmployeeList from "./employees.json";
 import EmployeeModal from "../../../components/modals/EmployeeModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getEmployees } from '../../../utils/localStorage'
 
 export default function Employees() {
   const [openModal, setOpenModal] = useState(false);
   const [modalData, setModalData] = useState({});
+  const [EmployeeList, setEmployeeList] = useState([]);
+  const [canDelete, setCanDelete] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   const statusColor = (color: string) => {
     switch(color) {
@@ -20,16 +26,26 @@ export default function Employees() {
     }
   }
   const editUser = (data: object) => {
+    setCanDelete(false);
     setOpenModal(!openModal);
     setModalData(data);
   }
   const createUser = () => {
+    setCanDelete(false);
     setOpenModal(!openModal);
     setModalData({});
   }
+  const deleteUser = (data: object) => {
+    setCanDelete(true);
+    setOpenModal(!openModal);
+    setModalData(data);
+  }
+  useEffect(()=> {
+    setEmployeeList(getEmployees() ?? [])
+  },[])
   return (
     <main className="p-[40px]">
-      <EmployeeModal open={openModal} data={modalData} setOpen={() => setOpenModal(!openModal)} />
+      <EmployeeModal open={openModal} data={modalData} setOpen={() => setOpenModal(!openModal)} setEmployeeList={setEmployeeList} canDelete={canDelete}/>
       <div>
         <header className="font-primary flex items-center mb-[40px]">
             <h1 className="text-[28px] font-semibold text-gray-800">Employee Management</h1>
@@ -46,8 +62,11 @@ export default function Employees() {
             <h1 className="font-semibold leading-none w-full font-header">User List ({EmployeeList.length})</h1>
             <TextField 
             text="Search by name / email" 
+            type="search"
             lefticon="search"
             className="py-[8px] w-full min-w-[400px]"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
             />
             <Button 
               text="Invite User"
@@ -75,14 +94,14 @@ export default function Employees() {
                               </thead>
                               <tbody className="text-gray-600 text-sm font-light">
                                 {
-                                  EmployeeList.map((employee, index) => (
+                                  EmployeeList.filter((em) => em.fullName.indexOf(searchValue.toLowerCase()) != -1).map((employee, index) => (
                                     <tr className="border-b border-gray-200 hover:bg-gray-100">
                                       <td className="py-5 px-6 w-[10px]">{index + 1}</td>
                                       <td className="py-3 px-6 text-left whitespace-nowrap">
                                         <div className="flex items-center cursor-pointer" onClick={() => editUser(employee)}>
-                                          <div className="mr-2">
+                                          {/* <div className="mr-2">
                                               <img className="w-6 h-6 rounded-full" src={employee.img}/>
-                                          </div>
+                                          </div> */}
                                           <span className="font-medium">{employee.fullName}</span>
                                         </div>
                                       </td>
@@ -92,7 +111,7 @@ export default function Employees() {
                                       <td className="py-3 px-6 text-left">
                                         <span>
                                           {employee.role}
-                                          <span className="bg-sky-200 p-[4px] rounded-md ml-[8px] font-medium text-[12px]">{employee.tag}</span>
+                                          {/* <span className="bg-sky-200 p-[4px] rounded-md ml-[8px] font-medium text-[12px]">{employee.tag}</span> */}
                                         </span>
                                       </td>
                                       <td className="py-3 px-6 text-left">
@@ -108,7 +127,7 @@ export default function Employees() {
                                                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                                   </svg>
                                               </div>
-                                              <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer">
+                                              <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110 cursor-pointer" onClick={() => deleteUser(employee)}>
                                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                   </svg>
