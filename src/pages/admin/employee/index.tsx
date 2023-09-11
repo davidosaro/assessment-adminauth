@@ -94,7 +94,7 @@ export default function Employees() {
                               </thead>
                               <tbody className="text-gray-600 text-sm font-light">
                                 {
-                                  EmployeeList.filter((em) => em.fullName.indexOf(searchValue.toLowerCase()) != -1).map((employee, index) => (
+                                  EmployeeList.filter((em) => em.fullName.toLowerCase().indexOf(searchValue.toLowerCase()) != -1).map((employee, index) => (
                                     <tr className="border-b border-gray-200 hover:bg-gray-100">
                                       <td className="py-5 px-6 w-[10px]">{index + 1}</td>
                                       <td className="py-3 px-6 text-left whitespace-nowrap">

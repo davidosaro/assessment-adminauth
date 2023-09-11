@@ -6,6 +6,8 @@ import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import Button from "../inputs/button/index.tsx";
 import { useEffect, useState } from "react";
 import { setTasks, getTasks } from "../../utils/localStorage.ts";
+import Notify from "../utils/Notify.ts";
+
 interface data {
   title?: string,
   description?: string,
@@ -49,6 +51,7 @@ export default function TaskModal({open, setOpen, data = {}, setTaskList, canDel
     setTasks(new_tasks);
     setTaskList(new_tasks);
     setOpen();
+    Notify('task deleted successfully', 'success')
   }
   const saveTask = () => {
     if (canDelete) {
@@ -66,6 +69,7 @@ export default function TaskModal({open, setOpen, data = {}, setTaskList, canDel
       setOpen();
       setTasks(new_task);
       setTaskList(new_task);
+      Notify('user edited successfully', 'success')
 
       return
     }
@@ -73,6 +77,7 @@ export default function TaskModal({open, setOpen, data = {}, setTaskList, canDel
     setOpen();
     setTaskList([...getTasks() ?? [], new_task]);
     setTasks([...getTasks() ?? [], new_task]);
+    Notify('task created successfully', 'success')
   }
 
   useEffect(() => {

@@ -6,6 +6,7 @@ import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import Button from "../inputs/button/index.tsx";
 import { useEffect, useState } from "react";
 import { getEmployees, setEmployees } from '../../utils/localStorage.ts'
+import Notify from "../utils/Notify.ts";
 
 interface data {
   fullName?: string,
@@ -60,6 +61,7 @@ export default function EmployeeModal({open, setOpen, data = {}, setEmployeeList
     setEmployees(new_employees);
     setEmployeeList(new_employees);
     setOpen();
+    Notify('user deleted successfully', 'success')
   }
   const saveUser = () => {
     // delete
@@ -78,6 +80,7 @@ export default function EmployeeModal({open, setOpen, data = {}, setEmployeeList
       setOpen();
       setEmployees(new_employees);
       setEmployeeList(new_employees);
+      Notify('user edited successfully', 'success')
 
       return
     }
@@ -86,6 +89,7 @@ export default function EmployeeModal({open, setOpen, data = {}, setEmployeeList
     setOpen();
     setEmployeeList([...getEmployees() ?? [], new_employees]);    
     setEmployees([...getEmployees() ?? [], new_employees]);
+    Notify('user created successfully', 'success')
   }
 
   useEffect(() => {
