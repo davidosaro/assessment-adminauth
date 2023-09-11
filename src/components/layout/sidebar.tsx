@@ -1,4 +1,4 @@
-import { IconDefinition, faAngleDown, faArrowRightFromBracket, faCalendarCheck, faCircleUser, faHouseCircleCheck, faM, faPeoplePulling, faUserGroup } from "@fortawesome/free-solid-svg-icons";
+import { IconDefinition, faAngleDown, faArrowRightFromBracket, faCalendarCheck, faHouseCircleCheck, faPeoplePulling } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
